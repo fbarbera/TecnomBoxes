@@ -1,0 +1,6 @@
+@TecnomBoxes_HostAddress = http://localhost:5101
+
+GET {{TecnomBoxes_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
