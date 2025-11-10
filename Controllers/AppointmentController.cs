@@ -18,24 +18,30 @@ namespace TecnomBoxes.Controllers
             _workshopsService = workshopsService;
         }
 
-        // GET: api/<AppointmentController>
-        [HttpGet]
+        /// <summary>
+        /// Retrieves all appointments.
+        /// </summary>
+        /// <remarks>This method returns a list of all appointments available in the system. The result is
+        /// returned as an HTTP 200 OK response containing the list of appointments.</remarks>
+        /// <returns>An <see cref="IActionResult"/> containing an HTTP 200 OK response with a list of appointments.</returns>
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var appointmentsList = _appointmentsService.GetAppointments();
             return Ok(appointmentsList);
         }
 
-        // GET api/<AppointmentController>/5
-        //[HttpGet("{id}")]
-        //public IActionResult GetById(int id)
-        //{
-        //    var appointment = _appointmentsService.GetAppointmentById(id);
-        //    return Ok(appointment);
-        //}
-
-        // POST api/<AppointmentController>
-        [HttpPost]
+        /// <summary>
+        /// Creates a new appointment based on the provided appointment data.
+        /// </summary>
+        /// <remarks>This method checks if the specified workshop is active before creating the
+        /// appointment.  If the workshop is not active, the method returns a bad request response.</remarks>
+        /// <param name="appointmentDTO">The data transfer object containing the details of the appointment to be created.  Must not be <see
+        /// langword="null"/> and must have a valid <c>place_id</c>.</param>
+        /// <returns>An <see cref="IActionResult"/> indicating the result of the operation.  Returns <see
+        /// cref="BadRequestResult"/> if the input data is invalid or the specified workshop is not active.  Returns
+        /// <see cref="CreatedAtActionResult"/> if the appointment is successfully created.</returns>
+        [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] AppointmentDTO appointmentDTO)
         {
             if (appointmentDTO == null)
@@ -64,19 +70,7 @@ namespace TecnomBoxes.Controllers
                 created_at = DateTime.UtcNow
             };
             _appointmentsService.AddAppointment(appointmentDTO);
-            return CreatedAtAction(nameof(GetAll), new { id = appointmentDTO.place_id }, appointmentDTO);
+            return Ok(new { message = "Turno creado correctamente" });
         }
-
-        //// PUT api/<AppointmentController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<AppointmentController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
