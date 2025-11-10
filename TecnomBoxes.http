@@ -1,6 +1,35 @@
-@TecnomBoxes_HostAddress = http://localhost:5101
+@baseUrl = http://localhost:5101
+@contentType = application/json
 
-GET {{TecnomBoxes_HostAddress}}/weatherforecast/
+### 
+GET {{baseUrl}}/api/workshop
 Accept: application/json
 
 ###
+
+### Create
+POST {{baseUrl}}/api/appointment
+Content-Type: {{contentType}}
+
+{
+  "place_id": 2222,
+  "appointment_at": "2025-11-10T10:00:00Z",
+  "service_type": "Cambio de aceite",
+  "contact": {
+    "name": "Facundo Barbera",
+    "email": "facundo@correo.com",
+    "phone": "123456789"
+  },
+  "vehicle": {
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2020,
+    "license_plate": "ABC123"
+  }
+}
+
+###
+
+### GET
+GET {{baseUrl}}/api/appointments
+Accept: application/json
