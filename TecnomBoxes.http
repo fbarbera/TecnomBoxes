@@ -8,28 +8,31 @@ Accept: application/json
 ###
 
 ### Create
-POST {{baseUrl}}/api/appointment
+POST {{baseUrl}}/api/appointment/create
 Content-Type: {{contentType}}
 
 {
-  "place_id": 3,
-  "appointment_at": "2025-11-10T10:00:00Z",
-  "service_type": "Cambio de aceite",
-  "contact": {
-    "name": "Facundo Barbera",
-    "email": "facundo@correo.com",
-    "phone": "123456789"
-  },
-  "vehicle": {
-    "make": "Toyota",
-    "model": "Corolla",
-    "year": 2020,
-    "license_plate": "ABC123"
+    "place_id": 2,
+    "appointment_at": "2025-11-14T12:19:00Z",
+    "service_type": "Cambio de aceite",
+    "contact": {
+      "id": 0,
+      "name": "Franco Colapinto",
+      "email": "fc43@alpine.com",
+      "phone": "+542218523665"
+    },
+    "vehicle": {
+      "id": 0,
+      "make": "Renault",
+      "model": "12",
+      "year": 1984,
+      "license_plate": "xcv043"
+    },
+    "created_at": "0001-01-01T00:00:00"
   }
-}
 
 ###
 
 ### GET
-GET {{baseUrl}}/api/appointments
+GET {{baseUrl}}/api/appointment/getAll
 Accept: application/json
