@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
+using System.Net.Http;
+using System.Runtime;
 using System.Text.Json;
 using TecnomBoxes.Models;
 
@@ -16,16 +19,12 @@ namespace TecnomBoxes.Services
         private readonly IMemoryCache _memoryCache;
         private const string CacheKey = "workshops_active";
         private readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(10);
-        private string _userName = "max@tecnom.com.ar";
-        private string _password = "b0x3sApp";
-        private string _baseUrl = "https://dev.tecnomcrm.com/api/v1/places/workshops";
+        private readonly TecnomCRMSettings _settings;
 
-        public WorkshopsService(HttpClient httpClient, IMemoryCache memoryCache)
+        public WorkshopsService(IHttpClientFactory httpClientFactory, IMemoryCache memoryCache)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("TecnomCRM");
             _memoryCache = memoryCache;
-            var authToken = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{_userName}:{_password}"));
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", authToken);
         }
         public async Task<IEnumerable<WorkshopDTO>> GetActiveWorkshopsAsync()
         {
@@ -33,7 +32,7 @@ namespace TecnomBoxes.Services
             {
                 return activeWorkshops;
             }
-            var response = await _httpClient.GetAsync(_baseUrl);
+            var response = await _httpClient.GetAsync(string.Empty);
             response.EnsureSuccessStatusCode();
             var workshopsJson = await response.Content.ReadAsStringAsync();
             var workshops = JsonSerializer.Deserialize<IEnumerable<WorkshopDTO>>(workshopsJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
